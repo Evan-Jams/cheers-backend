@@ -5,7 +5,7 @@ const PORT = 3003
 
 
 app.get('/', (req, res) => {
-    res.render('Hey guys')
+    res.send('Hey guys')
 })
 
 app.listen(PORT, () => {
