@@ -1,13 +1,46 @@
+/******************************************************************************
+                            DEPENDENCIES
+******************************************************************************/
+
 const express = require('express')
 const app = express()
 const PORT = process.env.PORT || 3003
 const mongoose = require('mongoose')
+const beerController = require('./controllers/beers.js')
 
+/*****************************************************************************
+                              MIDDLEWARE
+******************************************************************************/
 
-app.get('/', (req, res) => {
-    res.send('Hey guys')
+app.use(express.json())
+
+/******************************************************************************
+                        MONGOOSE CONNECTION
+******************************************************************************/
+
+mongoose.connection.on('error', error => {console.log(error.message + 'remember to run mongo or something')})
+mongoose.connection.on('disconnected', () => console.log('we are disconnected'))
+
+mongoose.connect('mongodb://localhost:27017/beers', {useUnifiedTopology:true, useNewUrlParser: true})
+
+mongoose.connection.once('open', () => {
+  console.log('connected to mongoose');
 })
 
+
+/******************************************************************************
+                          ROUTES - BELOW
+*******************************************************************************/
+
+app.use('/beers', beerController)
+
+
+
+
+
+/******************************************************************************
+                          LISTENER
+*******************************************************************************/
 app.listen(PORT, () => {
     console.log('Listening on port: ', PORT);
 })
