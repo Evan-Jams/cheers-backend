@@ -8,6 +8,7 @@ const app = express()
 const PORT = process.env.PORT || 3003
 const mongoose = require('mongoose')
 const beerController = require('./controllers/beers.js')
+const mongoConnect = process.env.MONGODB_URI || 'mongodb://localhost:27017/beers'
 
 
 /*****************************************************************************
@@ -35,7 +36,7 @@ app.use(cors(corsOptions))
 mongoose.connection.on('error', error => {console.log(error.message + 'remember to run mongo or something')})
 mongoose.connection.on('disconnected', () => console.log('we are disconnected'))
 
-mongoose.connect('mongodb://localhost:27017/beers', {useUnifiedTopology:true, useNewUrlParser: true})
+mongoose.connect(mongoConnect, {useUnifiedTopology:true, useNewUrlParser: true})
 
 mongoose.connection.once('open', () => {
   console.log('connected to mongoose');
