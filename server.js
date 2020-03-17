@@ -15,7 +15,7 @@ const beerController = require('./controllers/beers.js')
 ******************************************************************************/
 
 app.use(express.json())
-const whitelist = ['http://localhost:3000', 'https://cheers-frontend.herokuapp.com/']
+const whitelist = ['http://localhost:3000', 'https://cheers-frontend.herokuapp.com']
 const corsOptions = {
   origin: function(origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
