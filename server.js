@@ -17,17 +17,26 @@ const mongoConnect = process.env.MONGODB_URI || 'mongodb://localhost:27017/beers
 
 app.use(express.json())
 const whitelist = ['http://localhost:3000', 'https://cheers-frontend.herokuapp.com', 'https://cheers-backend.herokuapp.com']
-const corsOptions = {
-  origin: function(origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
+// const corsOptions = {
+//   origin: function(origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1) {
+//       callback(null, true)
+//     } else {
+//       callback(new Error('Not allowed by CORS'))
+//     }
+//   }
+// }
+var corsOptionsDelegate = function (req, callback) {
+  var corsOptions;
+  if (whitelist.indexOf(req.header('Origin')) !== -1) {
+    corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
+  } else {
+    corsOptions = { origin: false } // disable CORS for this request
   }
+  callback(null, corsOptions) // callback expects two parameters: error and options
 }
 
-app.use(cors(corsOptions))
+app.use(cors(corsOptionsDelegate))
 
 /******************************************************************************
                         MONGOOSE CONNECTION
