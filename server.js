@@ -45,7 +45,11 @@ app.use(cors(corsOptionsDelegate))
 mongoose.connection.on('error', error => {console.log(error.message + 'remember to run mongo or something')})
 mongoose.connection.on('disconnected', () => console.log('we are disconnected'))
 
-mongoose.connect(mongoConnect, {useUnifiedTopology:true, useNewUrlParser: true})
+mongoose.connect(mongoConnect, {
+    useUnifiedTopology:true,
+    useNewUrlParser: true,
+    useFindAndModify: false
+})
 
 mongoose.connection.once('open', () => {
   console.log('connected to mongoose');
